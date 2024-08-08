@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Manage Products</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="assets/css/main.css" />
+        <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    </head>
+    <body class="is-preload">
+
+        <!-- Page Wrapper -->
+        <div id="page-wrapper">
+
+            <!-- Header -->
+            <header id="header" class="alt">
+                <h1><a href="manage.html">Manage Products</a></h1>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="manage.html">Manage Products</a></li>
+                    </ul>
+                </nav>
+            </header>
+
+            <!-- Main -->
+            <section id="main" class="wrapper">
+                <div class="inner">
+                    <h2>Update Product Links</h2>
+                    <form id="product-form">
+                        <div id="product-links"></div>
+                        <button type="button" id="add-product">Add Product</button>
+                        <button type="submit">Save Changes</button>
+                        <button type="button" id="remove-all-products">Remove All</button>
+                    </form>
+                    <h2>Generate Limited-Time Link</h2>
+                    <form id="link-form">
+                        <label for="link-duration">Duration (minutes):</label>
+                        <input type="number" id="link-duration" name="duration" min="1" required>
+                        <button type="submit">Generate Link</button>
+                    </form>
+                    <div id="generated-link"></div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <section id="footer">
+                <div class="inner">
+                    <h2 class="major">Contacto</h2>
+                    <ul class="contact">
+                        <li class="icon solid fa-home">
+                            Diseño S.A. de C.V.<br />
+                            17a. Av. Norte 324, San Salvador,<br />
+                            El Salvador
+                        </li>
+                        <li class="icon solid fa-phone">(503) 2271-0218</li>
+                        <li class="icon solid fa-envelope"><a href="#">info@diseno.com.sv</a></li>
+                        <li class="icon solid fa-store"><a href="#">https://www.diseno.com.sv/</a></li>
+                        <li class="icon brands fa-facebook-f"><a href="#">https://www.facebook.com/diseno.arteydibujo/</a></li>
+                        <li class="icon brands fa-instagram"><a href="#">https://www.instagram.com/diseno_arteydibujo/</a></li>
+                    </ul>
+                    <ul class="copyright">
+                        <li>&copy; 2024 Diseño S.A. de C.V.</li>
+                    </ul>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Scripts -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/jquery.scrollex.min.js"></script>
+        <script src="assets/js/browser.min.js"></script>
+        <script src="assets/js/breakpoints.min.js"></script>
+        <script src="assets/js/util.js"></script>
+        <script src="assets/js/main.js"></script>
+        <script src="assets/js/manage-products.js"></script>
+
+    </body>
+</html>

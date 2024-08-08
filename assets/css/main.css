@@ -37,6 +37,19 @@ ol, ul {
 	list-style: none;
 }
 
+img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+}
+
+.background-image-class {
+    background-image: url("images/your-image.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
 blockquote, q {
 	quotes: none;
 }
