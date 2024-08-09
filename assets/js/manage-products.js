@@ -1,3 +1,6 @@
+import { database } from '../../firebase.js';
+import { ref, get, set, remove, onValue } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js';
+
 document.addEventListener('DOMContentLoaded', function() {
     const productForm = document.getElementById('product-form');
     const productLinksContainer = document.getElementById('product-links');
@@ -6,7 +9,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const linkForm = document.getElementById('link-form');
     const generatedLinkContainer = document.getElementById('generated-link');
 
-    let products = JSON.parse(localStorage.getItem('products')) || [];
+    const productsRef = ref(database, 'products');
+    let products = [];
+
+    function loadProducts() {
+        get(productsRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                products = snapshot.val() || [];
+                renderProductLinks();
+            } else {
+                console.log("No products available");
+            }
+        }).catch((error) => {
+            console.error('Error loading products:', error);
+        });
+    }
 
     function renderProductLinks() {
         productLinksContainer.innerHTML = '';
@@ -24,22 +41,24 @@ document.addEventListener('DOMContentLoaded', function() {
             productLinksContainer.appendChild(container);
         });
 
-        // Attach event listeners to the remove buttons
         document.querySelectorAll('.remove-product').forEach(button => {
             button.addEventListener('click', function() {
                 const index = parseInt(this.getAttribute('data-index'));
-                console.log('Removing product at index:', index);
-                products = products.filter((_, i) => i !== index);
+                products.splice(index, 1);
                 saveProducts();
-                renderProductLinks();
             });
         });
     }
 
     function saveProducts() {
-        console.log('Saving products:', products);
-        localStorage.setItem('products', JSON.stringify(products));
-        renderProductLinks();
+        set(productsRef, products)
+            .then(() => {
+                console.log('Products saved successfully.');
+                renderProductLinks();
+            })
+            .catch(error => {
+                console.error('Error saving products:', error);
+            });
     }
 
     productForm.addEventListener('submit', function(event) {
@@ -56,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     addProductButton.addEventListener('click', function() {
-        console.log('Adding new product');
         products.push({
             title: '',
             link: '',
@@ -67,12 +85,17 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     removeAllButton.addEventListener('click', function() {
-        console.log('Removing all products');
-        products = [];
-        saveProducts();
+        remove(productsRef)
+            .then(() => {
+                products = [];
+                renderProductLinks();
+            })
+            .catch(error => {
+                console.error('Error removing products:', error);
+            });
     });
 
-    linkForm.addEventListener('submit', function (event) {
+    linkForm.addEventListener('submit', function(event) {
         event.preventDefault();
         const duration = parseInt(document.getElementById('link-duration').value);
         const expirationTime = Date.now() + duration * 60 * 1000; // Duration in milliseconds
@@ -80,7 +103,5 @@ document.addEventListener('DOMContentLoaded', function() {
         generatedLinkContainer.innerHTML = `<a href="${link}">${link}</a>`;
     });
 
-    
-
-    renderProductLinks();
+    loadProducts();
 });
