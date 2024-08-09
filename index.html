@@ -62,37 +62,28 @@
         </div>
 
         <!-- Scripts -->
-        <script  type="module" src="./firebase.js"></script>
+        <script type="module" src="./firebase.js"></script> <!-- Ensure this is loaded -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/jquery.scrollex.min.js"></script>
         <script src="assets/js/browser.min.js"></script>
         <script src="assets/js/breakpoints.min.js"></script>
         <script src="assets/js/util.js"></script>
         <script src="assets/js/main.js"></script>
-        <script>
+        <script type="module">
+            import { database } from './firebase.js'; // Import the database reference
+            import { ref, get } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js'; // Import ref and get functions
+
             document.addEventListener('DOMContentLoaded', function () {
-                const urlParams = new URLSearchParams(window.location.search);
-                const expires = urlParams.get('expires');
+                const productsContainer = document.getElementById('products-container');
 
-                if (!expires || Date.now() > parseInt(expires)) {
-                    alert('This link has expired.');
-                    window.location.href = 'error.html';
-                } else {
-                    loadAndRenderProducts();
-                }
-
-                function loadAndRenderProducts() {
-                    const productsContainer = document.getElementById('products-container');
-                    const products = JSON.parse(localStorage.getItem('products')) || [];
-
+                function renderProducts(products) {
                     productsContainer.innerHTML = ''; // Clear any existing content
 
                     products.forEach((product, index) => {
-                        const styleClass = (index % 2 === 0) ? 'style1' : 'style2';
+                        const styleClass = index % 2 === 0 ? 'style1' : 'style2';
                         const productElement = document.createElement('section');
                         productElement.classList.add('wrapper', 'spotlight', styleClass);
 
-                        // Construct the HTML for the product with initial image src
                         productElement.innerHTML = `
                             <div class="inner">
                                 <a href="${product.link}" class="image">
@@ -106,22 +97,31 @@
                             </div>
                         `;
 
-                        // Append the constructed product to the container
                         productsContainer.appendChild(productElement);
 
-                        // Add error handling for image loading
                         const imgElement = document.getElementById(`product-image-${index}`);
-                        imgElement.onerror = function () {
+                        imgElement.onerror = function() {
                             console.error('Failed to load image:', product.image);
                             this.src = 'https://via.placeholder.com/300?text=Image+Not+Available'; // Fallback image URL
                         };
 
-                        // Add a check to verify if the image URL is accessible
-                        imgElement.onload = function () {
+                        imgElement.onload = function() {
                             console.log('Image loaded successfully:', product.image);
                         };
                     });
                 }
+
+                function loadProductsFromFirebase() {
+                    const dbRef = ref(database, 'products'); // Correct reference to Firebase
+                    get(dbRef).then((snapshot) => {
+                        const products = snapshot.val() || [];
+                        renderProducts(Object.values(products)); // Render products retrieved from Firebase
+                    }).catch((error) => {
+                        console.error('Error fetching products from Firebase:', error);
+                    });
+                }
+
+                loadProductsFromFirebase();
             });
         </script>
     </body>

@@ -8,6 +8,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyDm2pnt9aDEufYqKAyMiUdUJFjsbQ5MHJA",
   authDomain: "appliqdis.firebaseapp.com",
   projectId: "appliqdis",
+  databaseURL: "https://appliqdis-default-rtdb.firebaseio.com/",
   storageBucket: "appliqdis.appspot.com",
   messagingSenderId: "467025472081",
   appId: "1:467025472081:web:dfb19fe36e1af8c5cfa670",
