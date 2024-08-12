@@ -74,6 +74,15 @@
             import { ref, get } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js'; // Import ref and get functions
 
             document.addEventListener('DOMContentLoaded', function () {
+                const urlParams = new URLSearchParams(window.location.search);
+                const expires = urlParams.get('expires');
+
+                if (!expires || Date.now() > parseInt(expires)) {
+                    alert('This link has expired or is invalid.');
+                    window.location.href = 'error.html';
+                    return;
+                }
+
                 const productsContainer = document.getElementById('products-container');
 
                 function renderProducts(products) {
