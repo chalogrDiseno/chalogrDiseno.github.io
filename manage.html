@@ -14,11 +14,10 @@
 
             <!-- Header -->
             <header id="header" class="alt">
-                <h1><a href="manage.html">Manage Products</a></h1>
+                <h1>Manage Products</h1>
                 <nav>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="manage.html">Manage Products</a></li>
+                    <li><button id="logout-btn" class="button small">Cerrar sesión</button></li>
                     </ul>
                 </nav>
             </header>
@@ -47,17 +46,37 @@
             <section id="footer">
                 <div class="inner">
                     <h2 class="major">Contacto</h2>
-                    <ul class="contact">
+                     <ul class="contact">
                         <li class="icon solid fa-home">
                             Diseño S.A. de C.V.<br />
                             17a. Av. Norte 324, San Salvador,<br />
                             El Salvador
                         </li>
                         <li class="icon solid fa-phone">(503) 2271-0218</li>
-                        <li class="icon solid fa-envelope"><a href="#">info@diseno.com.sv</a></li>
-                        <li class="icon solid fa-store"><a href="#">https://www.diseno.com.sv/</a></li>
-                        <li class="icon brands fa-facebook-f"><a href="#">https://www.facebook.com/diseno.arteydibujo/</a></li>
-                        <li class="icon brands fa-instagram"><a href="#">https://www.instagram.com/diseno_arteydibujo/</a></li>
+
+                        <!-- Email: text only, no link -->
+                        <li class="icon solid fa-envelope">info@diseno.com.sv</li>
+
+                        <!-- Website -->
+                        <li class="icon solid fa-store">
+                            <a href="https://www.diseno.com.sv/" target="_blank" rel="noopener">
+                                https://www.diseno.com.sv/
+                            </a>
+                        </li>
+
+                        <!-- Facebook -->
+                        <li class="icon brands fa-facebook-f">
+                            <a href="https://www.facebook.com/diseno.arteydibujo/" target="_blank" rel="noopener">
+                                https://www.facebook.com/diseno.arteydibujo/
+                            </a>
+                        </li>
+
+                        <!-- Instagram -->
+                        <li class="icon brands fa-instagram">
+                            <a href="https://www.instagram.com/diseno_arteydibujo/" target="_blank" rel="noopener">
+                                https://www.instagram.com/diseno_arteydibujo/
+                            </a>
+                        </li>
                     </ul>
                     <ul class="copyright">
                         <li>&copy; 2024 Diseño S.A. de C.V.</li>
@@ -76,6 +95,31 @@
         <script src="assets/js/util.js"></script>
         <script src="assets/js/main.js"></script>
         <script type="module" src="assets/js/manage-products.js"></script>
+        <script type="module">
+            import { auth } from './firebase.js';
+            import { onAuthStateChanged, signOut }
+                from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js';
+
+            const logoutBtn = document.getElementById('logout-btn');
+
+            onAuthStateChanged(auth, (user) => {
+                if (!user) {
+                // Not logged in → send to error page
+                window.location.href = 'error.html';
+                }
+            });
+
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', async () => {
+                try {
+                    await signOut(auth);
+                } catch (e) {
+                    console.error('Error al cerrar sesión', e);
+                }
+                window.location.href = 'login.html';
+                });
+            }
+        </script>
 
     </body>
 </html>

@@ -4174,3 +4174,9 @@ ul.contact li:first-child {
 		}
 
 	}
+
+	input[type="number"] {
+
+    color: #000 !important;
+	
+	}

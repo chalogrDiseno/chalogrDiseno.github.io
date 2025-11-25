@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Login - Diseño S.A. de C.V.</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+  </head>
+  <body class="is-preload">
+    <div id="page-wrapper">
+      <!-- Header -->
+      <header id="header" class="alt">
+        <h1>Acceso administrador</h1>
+      </header>
+
+      <!-- Main -->
+      <section id="main" class="wrapper">
+        <div class="inner">
+          <h2 class="major">Iniciar sesión</h2>
+          <p>Introduce tu usuario (email) y contraseña para acceder a la página de administración.</p>
+
+          <form id="login-form">
+            <div class="fields">
+              <div class="field">
+                <label for="email">Email</label>
+                <input type="email" id="email" required />
+              </div>
+              <div class="field">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" required />
+              </div>
+            </div>
+            <ul class="actions">
+              <li><button type="submit" class="primary">Entrar</button></li>
+            </ul>
+            <p id="login-error" style="color:red;"></p>
+          </form>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <section id="footer">
+        <div class="inner">
+          <p>Diseño S.A. de C.V. - Acceso privado</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="./firebase.js"></script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.scrollex.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <!-- Login logic -->
+    <script type="module">
+      import { auth } from './firebase.js';
+      import { signInWithEmailAndPassword, onAuthStateChanged }
+        from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js';
+
+      const form = document.getElementById('login-form');
+      const errorEl = document.getElementById('login-error');
+
+      // If already logged in, go straight to manage page
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          window.location.href = 'manage.html';
+        }
+      });
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorEl.textContent = '';
+
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+
+        try {
+          await signInWithEmailAndPassword(auth, email, password);
+          window.location.href = 'manage.html';
+        } catch (err) {
+          console.error(err);
+          // For now, send to generic error page on failure
+          window.location.href = 'error.html';
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,7 +1,6 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js';
 import { getDatabase } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js';
-import 'https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js';
-import 'https://www.gstatic.com/firebasejs/9.0.0/firebase-storage.js';
+import { getAuth } from 'https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js';
 
 // Your Firebase configuration
 const firebaseConfig = {
@@ -17,6 +16,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const database = getDatabase(app); // Initialize and reference the Realtime Database
+const database = getDatabase(app);
+const auth = getAuth(app);
 
-export { database }; // Export the database for use in other scripts
+export { database, auth };
