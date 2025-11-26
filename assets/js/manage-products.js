@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <input type="text" name="product-title-${index}" value="${product.title}" placeholder="Product ${index + 1} Title" required />
                 <input type="text" name="product-link-${index}" value="${product.link}" placeholder="Product ${index + 1} Link" required />
                 <input type="text" name="product-image-${index}" value="${product.image}" placeholder="Product ${index + 1} Image URL" required />
+                <input type="text" name="product-price-${index}" value="${product.price || ''}" placeholder="Product ${index + 1} Price" required />
                 <textarea name="product-description-${index}" placeholder="Product ${index + 1} Description" required>${product.description}</textarea>
                 <button type="button" class="remove-product" data-index="${index}">Remove</button>
             `;
@@ -68,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
             title: input.querySelector(`input[name="product-title-${index}"]`).value,
             link: input.querySelector(`input[name="product-link-${index}"]`).value,
             image: input.querySelector(`input[name="product-image-${index}"]`).value,
+            price: input.querySelector(`input[name="product-price-${index}"]`).value,
             description: input.querySelector(`textarea[name="product-description-${index}"]`).value
         }));
         saveProducts();
@@ -79,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
             title: '',
             link: '',
             image: '',
+            price: '',
             description: ''
         });
         renderProductLinks();
